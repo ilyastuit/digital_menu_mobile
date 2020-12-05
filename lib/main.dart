@@ -1,64 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:meals/providers/Cart.dart';
+import 'package:meals/screens/cart_screen.dart';
+import 'package:provider/provider.dart';
+
+import './screens/categories_screen.dart';
+import './screens/category_meals_screen.dart';
+import './screens/meal_detail_screen.dart';
+import './widgets/main_drawer.dart';
+import './screens/scan_screen.dart';
+import './models/meal.dart';
+import './models/category.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+  _MyAppState createState() => _MyAppState();
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class _MyAppState extends State<MyApp> {
+  List<Meal> meals = new List<Meal>();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) => Cart(),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+            primarySwatch: Colors.pink,
+            accentColor: Colors.amber,
+            canvasColor: Color.fromRGBO(255, 254, 229, 1),
+            fontFamily: 'Raleway',
+            textTheme: ThemeData.light().textTheme.copyWith(
+                bodyText1: TextStyle(color: Color.fromRGBO(20, 51, 51, 1)),
+                bodyText2: TextStyle(color: Color.fromRGBO(20, 51, 51, 1)),
+                headline5: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'RobotoCondensed',
+                    fontWeight: FontWeight.bold))),
+        routes: {
+          '/': (ctx) => this.meals.isEmpty
+              ? ScanScreen(this.meals)
+              : CategoriesScreen(this.meals[0].categories as List<Category>),
+          CategoryMealsScreen.routName: (ctx) => CategoryMealsScreen(),
+          CartScreen.routeName: (ctx) => CartScreen(),
+          MealDetailScreen.routName: (ctx) => MealDetailScreen(),
+          MainDrawer.routName: (ctx) => MainDrawer(),
+          ScanScreen.routName: (ctx) => ScanScreen(this.meals),
+          CategoriesScreen.routName: (ctx) => CategoriesScreen(
+              this.meals.isNotEmpty
+                  ? this.meals[0].categories as List<Category>
+                  : null),
+        },
+        onUnknownRoute: (settings) {
+          return MaterialPageRoute(
+              builder: (ctx) => CategoriesScreen(this.meals.isNotEmpty
+                  ? this.meals[0].categories as List<Category>
+                  : null));
+        },
       ),
     );
   }
