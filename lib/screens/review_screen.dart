@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:meals/providers/Cart.dart';
+import 'package:meals/widgets/badge.dart';
+import 'package:meals/widgets/main_drawer.dart';
+import 'package:provider/provider.dart';
 import 'package:reviews_slider/reviews_slider.dart';
+
+import 'cart_screen.dart';
 
 class ReviewScreen extends StatefulWidget {
   static const String routeName = '/feedback';
@@ -30,53 +36,83 @@ class _ReviewScreenState extends State<ReviewScreen> {
     });
   }
 
+  void _submitForm() {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Meal quality?',
-              style: TextStyle(color: Color(0xFF6f7478), fontSize: 18),
+      appBar: AppBar(
+        title: Text('Menu'),
+        actions: [
+          Consumer<Cart>(
+            builder: (_, cart, ch) => Badge(
+              child: ch,
+              value: cart.itemCount.toString(),
             ),
-            SizedBox(height: 20),
-            ReviewSlider(
-              onChange: onChange1,
+            child: IconButton(
+              icon: Icon(
+                Icons.shopping_cart,
+              ),
+              onPressed: () {
+                Navigator.of(context).pushNamed(CartScreen.routeName);
+              },
             ),
-            Text(selectedValue1.toString()),
-            SizedBox(height: 20),
-            Text(
-              'Price?',
-              style: TextStyle(color: Color(0xFF6f7478), fontSize: 18),
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.feedback_outlined,
             ),
-            SizedBox(height: 20),
-            ReviewSlider(
-                optionStyle: TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
-                ),
-                onChange: onChange2,
-                initialValue: 1,
-                options: ['Terrible', 'Bad', 'OK', 'Good', 'Excellent']),
-            Text(selectedValue2.toString()),
-            SizedBox(height: 20),
-            Text(
-              'Customer Service?',
-              style: TextStyle(color: Color(0xFF6f7478), fontSize: 18),
-            ),
-            SizedBox(height: 20),
-            ReviewSlider(
-                optionStyle: TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
-                ),
-                onChange: onChange3,
-                initialValue: 1,
-                options: ['Terrible', 'Bad', 'OK', 'Good', 'Excellent']),
-            Text(selectedValue3.toString()),
-          ],
+            onPressed: () {
+              Navigator.of(context).pushNamed(ReviewScreen.routeName);
+            },
+          ),
+        ],
+      ),
+      drawer: MainDrawer(),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Meal quality?',
+                style: TextStyle(color: Color(0xFF6f7478), fontSize: 18),
+              ),
+              SizedBox(height: 20),
+              ReviewSlider(
+                onChange: onChange1,
+              ),
+              Text(selectedValue1.toString()),
+              SizedBox(height: 20),
+              Text(
+                'Price?',
+                style: TextStyle(color: Color(0xFF6f7478), fontSize: 18),
+              ),
+              SizedBox(height: 20),
+              ReviewSlider(
+                  onChange: onChange2,
+                  initialValue: 1,),
+              Text(selectedValue2.toString()),
+              SizedBox(height: 20),
+              Text(
+                'Customer Service?',
+                style: TextStyle(color: Color(0xFF6f7478), fontSize: 18),
+              ),
+              SizedBox(height: 20),
+              ReviewSlider(
+                  onChange: onChange3,
+                  initialValue: 1,),
+              Text(selectedValue3.toString()),
+              RaisedButton(
+                color: Colors.blue,
+                textColor: Colors.white,
+                onPressed: _submitForm,
+                child: Text('Submit Feedback'),
+              ),
+            ],
+          ),
         ),
       ),
     );

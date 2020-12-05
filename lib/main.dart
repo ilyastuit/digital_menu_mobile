@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meals/providers/Cart.dart';
 import 'package:meals/screens/cart_screen.dart';
+import 'package:meals/screens/review_screen.dart';
 import 'package:provider/provider.dart';
 
 import './screens/categories_screen.dart';
@@ -54,6 +55,7 @@ class _MyAppState extends State<MyApp> {
           MealDetailScreen.routName: (ctx) => MealDetailScreen(),
           MainDrawer.routName: (ctx) => MainDrawer(),
           ScanScreen.routName: (ctx) => ScanScreen(this.meals),
+          ReviewScreen.routeName: (ctx) => ReviewScreen(),
           CategoriesScreen.routName: (ctx) => CategoriesScreen(
               this.meals.isNotEmpty
                   ? this.meals[0].categories as List<Category>

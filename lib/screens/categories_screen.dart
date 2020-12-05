@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meals/providers/Cart.dart';
 import 'package:meals/screens/cart_screen.dart';
+import 'package:meals/screens/review_screen.dart';
 import 'package:meals/widgets/badge.dart';
 import 'package:provider/provider.dart';
 
@@ -58,6 +59,14 @@ class CategoriesScreen extends StatelessWidget {
                 Navigator.of(context).pushNamed(CartScreen.routeName);
               },
             ),
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.feedback_outlined,
+            ),
+            onPressed: () {
+              Navigator.of(context).pushNamed(ReviewScreen.routeName);
+            },
           ),
         ],
       ),
