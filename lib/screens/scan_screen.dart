@@ -35,7 +35,7 @@ class _ScanScreenState extends State<ScanScreen> {
     //var newBarcode = barCode.replaceAll('localhost', Platform.isIOS ? '169.254.159.35:8000' : '10.0.2.2:8000');
     var newBarcode = barCode.replaceAll('localhost', '192.168.42.130:8000');
     //final response = await http.get("http://10.0.2.2:8000/restaurant/leukapizza", headers: {'safemenu': "1"},);
-    final response = await http.get(newBarcode, headers: {'safemenu': "1"},);
+    final response = await http.get(newBarcode, headers: {'digitalmenu': "1"},);
 
     if (response.statusCode == 200) {
       var jsonBody = json.decode(response.body);
