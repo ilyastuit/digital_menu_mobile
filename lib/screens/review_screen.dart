@@ -10,6 +10,7 @@ import 'package:reviews_slider/reviews_slider.dart';
 import 'package:http/http.dart' as http;
 
 import 'cart_screen.dart';
+import 'categories_screen.dart';
 
 class ReviewScreen extends StatefulWidget {
   static const String routeName = '/feedback';
@@ -43,7 +44,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
 
   Future<void> _submitForm() async {
     final response = await http.post(
-      'http://192.168.42.67:8000/feedback/leukapizza',
+      'http://192.168.42.86:8000/feedback/leukapizza',
       headers: {
         'digitalmenu': "1",
         HttpHeaders.contentTypeHeader: "application/json"
@@ -55,6 +56,7 @@ class _ReviewScreenState extends State<ReviewScreen> {
       }),
     );
     print(response.headers);
+    Navigator.of(context).pushNamed(CategoriesScreen.routName,);
   }
 
   @override
