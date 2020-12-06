@@ -46,6 +46,14 @@ class CategoriesScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Menu'),
         actions: [
+          IconButton(
+            icon: Icon(
+              Icons.feedback_outlined,
+            ),
+            onPressed: () {
+              Navigator.of(context).pushNamed(ReviewScreen.routeName);
+            },
+          ),
           Consumer<Cart>(
             builder: (_, cart, ch) => Badge(
               child: ch,
@@ -59,14 +67,6 @@ class CategoriesScreen extends StatelessWidget {
                 Navigator.of(context).pushNamed(CartScreen.routeName);
               },
             ),
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.feedback_outlined,
-            ),
-            onPressed: () {
-              Navigator.of(context).pushNamed(ReviewScreen.routeName);
-            },
           ),
         ],
       ),
