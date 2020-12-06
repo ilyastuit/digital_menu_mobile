@@ -1,14 +1,19 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:meals/providers/Cart.dart';
 import 'package:meals/widgets/badge.dart';
 import 'package:meals/widgets/main_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:reviews_slider/reviews_slider.dart';
+import 'package:http/http.dart' as http;
 
 import 'cart_screen.dart';
 
 class ReviewScreen extends StatefulWidget {
   static const String routeName = '/feedback';
+
   @override
   _ReviewScreenState createState() => _ReviewScreenState();
 }
@@ -36,8 +41,20 @@ class _ReviewScreenState extends State<ReviewScreen> {
     });
   }
 
-  void _submitForm() {
-
+  Future<void> _submitForm() async {
+    final response = await http.post(
+      'http://192.168.42.67:8000/feedback/leukapizza',
+      headers: {
+        'digitalmenu': "1",
+        HttpHeaders.contentTypeHeader: "application/json"
+      },
+      body: jsonEncode(<String, String>{
+        'meal': selectedValue1.toString(),
+        'price': selectedValue2.toString(),
+        'service': selectedValue3.toString(),
+      }),
+    );
+    print(response.headers);
   }
 
   @override
@@ -92,8 +109,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
               ),
               SizedBox(height: 20),
               ReviewSlider(
-                  onChange: onChange2,
-                  initialValue: 1,),
+                onChange: onChange2,
+                initialValue: 1,
+              ),
               Text(selectedValue2.toString()),
               SizedBox(height: 20),
               Text(
@@ -102,8 +120,9 @@ class _ReviewScreenState extends State<ReviewScreen> {
               ),
               SizedBox(height: 20),
               ReviewSlider(
-                  onChange: onChange3,
-                  initialValue: 1,),
+                onChange: onChange3,
+                initialValue: 1,
+              ),
               Text(selectedValue3.toString()),
               RaisedButton(
                 color: Colors.blue,
